@@ -30,14 +30,27 @@ const signIn = async params => {
   );
 };
 
+export const signOut = async params => {
+  console.log('In service call her', params);
+  return axios.post(
+    BASE_URL + '/auth/SignOut',
+    {
+      email: params.email,
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    },
+  );
+};
+
 const create = async params => {
   console.log('In service call', params);
   return axios.post(
     BASE_URL + '/user/create',
     {
-      user: {
-        ...params,
-      },
+      ...params,
     },
     {
       headers: {

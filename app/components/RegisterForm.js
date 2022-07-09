@@ -35,25 +35,26 @@ export const RegisterForm = ({navigation}) => {
         age: values.age,
         gender: value,
       });
+      console.log(resp.data);
 
-      if (!resp.data.msg.error) {
+      if (resp.data.data.success) {
         setTimeout(() => {
-          setColor('#128C7E');
-
-          setErrorMessage(resp.data.msg);
-          setLoading(false);
-          setError(true);
-          console.log(resp.data);
+          navigation.navigate('Login');
         }, 700);
+        setColor('#128C7E');
+        setErrorMessage(resp.data.message);
+        setError(true);
+        setLoading(false);
+        console.log(resp.data);
       } else {
         console.log('Failed To Create User');
-        console.log(resp.data.msg);
-        setErrorMessage(resp.data.msg.msg);
+        console.log(resp.data.message);
+        setErrorMessage(resp.data.message);
         setLoading(false);
         setError(true);
       }
     } catch (e) {
-      setErrorMessage(e.msg);
+      setErrorMessage('An error has occurred');
       console.log(e);
 
       console.log('An error has occurred', e);

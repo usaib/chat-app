@@ -14,6 +14,7 @@ import AppBarWrapper from '../components/AppBar';
 import {Avatar} from 'react-native-paper';
 import HistoryItems from '../components/HistoryItems';
 import {getAllRooms} from '../services/users';
+import {createRoomChat, getRoomChat} from '../services/room';
 
 const LeftContent = props => <Avatar.Icon {...props} icon="folder" />;
 
@@ -21,7 +22,7 @@ function ChatScreen({navigation, route}) {
   const userDispatch = useUserDispatch();
   const {roomId, socket} = route.params;
   const userState = useUserState();
-  console.log('userstate', userState);
+  //   console.log('userstate', userState);
   const name = userState.user.name;
   const [data, setData] = useState([]);
   const [messages, setMessages] = useState([]);
@@ -40,6 +41,13 @@ function ChatScreen({navigation, route}) {
       <HistoryItems groupName={obj.item.name} createdAt={obj.item.createdAt} />
     );
   };
+  const createChat = async params => {
+    try {
+      const chat = await createRoomChat(params);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   useEffect(() => {
     console.log(messages);
@@ -52,8 +60,21 @@ function ChatScreen({navigation, route}) {
       () => {},
     );
   }, [socket]);
-
-  const sendMessage = () => {
+  useEffect(() => {
+    const getChat = async params => {
+      try {
+        const chat = await getRoomChat({roomId});
+        console.log(chat.data, chat.data.data.data.rows);
+        if (chat.data.success) {
+          setMessages(chat.data.data.data.rows);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    getChat();
+  }, []);
+  const sendMessage = async () => {
     socket.emit(
       'chat message',
       {
@@ -66,6 +87,7 @@ function ChatScreen({navigation, route}) {
         scrollToBottom(50);
       },
     );
+
     setChatMessage('');
   };
   const renderName = name => {
@@ -169,8 +191,15 @@ function ChatScreen({navigation, route}) {
               name="check-circle"
               color={'#128C7E'}
               size={40}
-              onPress={() => {
+              onPress={async () => {
                 sendMessage();
+                console.log('calling chat message');
+                await createChat({
+                  room: roomId,
+                  from: userState.user.name,
+                  text: chatMessage ? chatMessage : 'Hello',
+                  createdAt: new Date().now,
+                });
               }}
             />
           }

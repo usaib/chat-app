@@ -5,7 +5,7 @@ const Splash = () => {
   return (
     <View style={[styles.container, styles.horizontal]}>
       <Image
-        source={require('../images/logoWhite.png')}
+        source={require('../images/messages.png')}
         style={{height: 200, width: 200}}
       />
       <Text style={styles.Text}>FYP GROUP CHAT APPLICATION</Text>

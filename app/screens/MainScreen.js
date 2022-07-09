@@ -80,8 +80,10 @@ function MainScreen({navigation}) {
     <View style={styles.container}>
       <AppBarWrapper
         title={'Chats'}
-        onPress={() => {
-          navigation.navigate('Main');
+        onPress={async () => {
+          userDispatch({type: 'LOGOUT'});
+          await removeValue('isAuthenticated');
+          await removeValue('id');
         }}
         showMenu={true}
         showButton={true}

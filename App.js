@@ -21,4 +21,4 @@ export default function App() {
   );
 }
 
-export const BASE_URL = 'https://chatty-icons-judge-116-71-6-88.loca.lt';
+export const BASE_URL = 'https://pink-baths-retire-27-96-92-173.loca.lt';

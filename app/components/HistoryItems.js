@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, Dimensions} from 'react-native';
+import {StyleSheet, Text, View, Image, Dimensions} from 'react-native';
 import React from 'react';
 import {HistoryCard} from './HistoryCard';
 import {IconButton} from 'react-native-paper';
@@ -55,7 +55,7 @@ export default function HistoryItems({
       return '#128C7E';
     }
   };
-  const socket = socketIOClient('http://192.168.43.110:6868', {
+  const socket = socketIOClient('http://192.168.0.109:5001', {
     transports: ['websocket'],
     forceNew: true,
     upgrade: false,
@@ -87,20 +87,17 @@ export default function HistoryItems({
           flexDirection: 'column',
           alignItems: 'flex-start',
           justifyContent: 'center',
-          backgroundColor: '#B5DEFF4F',
           borderRadius: 10,
           width: 60,
           height: 60,
           marginRight: 15,
         }}>
-        <Text style={[styles.cardTitle, {alignSelf: 'center', fontSize: 20}]}>
-          {new Date(createdAt).getDate().toString()}
-        </Text>
-        <Text
-          style={[styles.cardTitle, {alignSelf: 'center', fontWeight: '400'}]}>
-          {monthNames[new Date(createdAt).getMonth().toString()]}
-        </Text>
+        <Image
+          source={require('../images/messages.png')}
+          style={{height: 60, width: 60}}
+        />
       </View>
+
       <View style={styles.cardTitleContainer}>
         <Text style={styles.cardTitle}>{groupName}</Text>
 
@@ -116,35 +113,6 @@ export default function HistoryItems({
           ]}>
           {days[new Date(createdAt).getDay().toString()]} ,
           {new Date(createdAt).toLocaleTimeString()}
-        </Text>
-      </View>
-      <View
-        style={{
-          height: 30,
-          paddingVertical: 6,
-          paddingHorizontal: 6,
-          marginTop: 'auto',
-          marginBottom: 'auto',
-          marginLeft: 'auto',
-          borderRadius: 5,
-          backgroundColor: setColour(appointmentStatus),
-        }}>
-        {/* <IconButton
-            icon="account-details"
-            color={'#128C7E'}
-            size={30}
-            onPress={() => console.log('Pressed')}
-          /> */}
-        <Text
-          style={[
-            styles.cardTitle,
-            {
-              fontSize: 14,
-              color: '#fff',
-              fontWeight: '700',
-            },
-          ]}>
-          {appointmentStatus}
         </Text>
       </View>
     </HistoryCard>
